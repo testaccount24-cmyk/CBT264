@@ -1,0 +1,56 @@
+ Please use source, either in member LOOKN or LOOK31$ to assemble
+ LOOK.  LOOK is the 64-bit version (the latest (and greatest?)).
+ LOOK31 is the 31-bit version (older).
+
+ LOOK02 is the old version.  On z/OS systems, you should not be
+ using it.
+
+ The latest 64-bit version, LOOKN, can initialize at a non-zero
+ address location, or in a different address space, using the
+ invocation parameters:
+
+
+    LOOK ADDRess(nnnnnnnn) ASID(hhh)
+
+        or for 64-bit addresses:
+
+    LOOK ADDRess(nnnnnnnn_nnnnnnnn) ASID(hhh)
+
+
+ The newest version of LOOK is the 64-bit version.  With it, you
+  can examine storage above the bar.
+
+ It is very important for you to read the member $$$$READ, if
+ you want to customize the formatting of control blocks that
+ LOOK is capable of doing.  IBM macros (which are used for this
+ process) have (of course) not been coded having LOOK in mind.
+ To get the results that you want, you may have to alter some
+ copies of IBM macros, and therefore you have to read this
+ member.
+
+ All the LOOK* modules have to be APF-authorized now, because
+  they obtain their work storage in Key 0 storage in CSA.
+  Previously, LOOK used to use Key 8 common storage, when you
+  weren't going cross-memory.  But IBM forbids that now, with
+  z/OS 2.4 and later.
+
+ After z/OS version 2.4 and including 2.4, you will HAVE TO USE
+  either LOOKN or LOOK31, because the earlier versions of LOOK
+  allocate user key common storage, which is not allowed at
+  z/OS 2.4 or later.
+
+ See members LOOK$, LOOK$$, or LOOK02$ for assembly-linkedit JCL.
+ LOOK31$ will assemble the 31-bit version.
+
+ VSM ALLOWUSERKEYCSA(NO) is not allowed to be coded in your
+ DIAGxx PARMLIB member, anymore.
+
+ The current versions of LOOK do not obtain user key CSA.
+
+ To see notes on customizing control block formatting in LOOK,
+ use member $$READ$$.  Formatting some IBM control blocks
+ correctly, may require copying the mapping macro and changing
+ the designation of certain fields to show their data in the
+ proper formats.  IBM writers of macros did not have LOOK in
+ mind, when they wrote their macros (of course)...!!!
+

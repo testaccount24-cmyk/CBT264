@@ -1,0 +1,123 @@
+                   SUBSTITUTION OF IBM MACROS
+
+Introduction:
+
+    IBM is IBM.  They don't consider user programs when they code.
+And so they certainly don't consider the user program called LOOK, with
+its macro formatting capabilities, when they code their macros.
+
+    The LOOK macro formatting capabilities, can read IBM macros and
+display formatted output, but only under certain conditions--conditions
+that IBM certainly does not keep in mind.
+
+EXAMPLES:
+
+    The CBMACS macro formatting will only format a label that is next
+to real data.  For example:  CBMACS will not format a label like:
+
+LABEL    DS    0F
+         DS    CL8
+
+In this case, the label called LABEL is not pointing to real data.
+On the other hand, if you had coded:
+
+         DS    0F
+LABEL    DS    CL8
+
+then the label is pointing to real data, and that field will get
+formatted.
+
+    An extreme case of this is found in the IBM macro IEFAJCTB, which
+describes the system's JCT control block (as opposed to the JES2
+control block of the same name).  Whoever coded this macro, in IBM,
+used DS  CLn  instructions instead of DS  XLn  instructions almost
+everywhere, and as a consequence, when CBMACS tries to format these
+fields, they almost all come out as unprintable, because they are not
+printable characters, but hexadecimal numbers.
+
+    So I made a copy of the macro, put it into my own dataset,
+SBGOLOB.LOOK.INSTALL, and changed almost all of the C's to X's.
+Below, you will see the difference in the LOOK display.
+
+First, the display with the pure IBM macro:
+
+LOOK COMMAND - DISPLAY VIRTUAL MEMORY      CURRENT ASID= 004B
+ENTER CMD -
+LAST CMD  - J+104
+                          008DA028  JCT
+ XXX1    00000001  XXX2    838DA028  XXX3    000000B0  JCT     JCT
+ DSKAD   ...     IDENT   .   JSRNO   .   JSTAT   .   JMGPO   K   JPRTY   .
+ JNAME   SBGOLOB           JTPTN   ........          PDIP    ....
+ GDGNT   ...     JCSMF   T   SDKAD   ..y.      JCTX    ..Y
+ ACTAD   .v..      SMRBA   ........          SCT     .   FLGS1   .
+ JDPCD   ..    JDPOP   ..    RSW1    .   RSW2    .   QIDNT   .   SNUMB   .
+ STIOT   00000000  DEVT    00000000  CKTTR   .   NTRK    .   NRCKP   0000
+ VOLSQ   .   JSB     .   SSTR    ..y     STAT2   e   CKIDL   .
+ CKIDT                                     JMR     .tY     JMRD    .
+ JMROP   1   JMRCL   .   JMRSS   ...     JMRJT   ...     JMRJD   ..?
+ SRBT    ....      SSD     ..?     USER                    PRFMF
+ ACODE   ....      VULDP   ....      DSKAD   ...     IDENT   .
+ JTIME   c..Y      PRGNM   ....JCTX..Y.
+ NEXT    ...     JNFLD   .
+ ACCNT   ..................................................
+
+
+
+1= HELP      2=           3= END        4=           5= REPEAT  6=
+7= BACKWARD  8= FORWARD   9= HIST BWD  10= HIST FWD 11=        12=
+
+
+Next, the display with the altered IBM macro, with most of the
+"character constants" changed to "hex constants".
+
+LOOK COMMAND - DISPLAY VIRTUAL MEMORY      CURRENT ASID= 004B
+ENTER CMD -
+LAST CMD  - LJMR
+                          008DA028  JCT
+ XXX1    00000001  XXX2    838DA028  XXX3    000000B0  JCT     JCT
+ DSKAD   8DA028  IDENT   00  JSRNO   80  JSTAT   00  JMGPO   D2  JPRTY   90
+ JNAME   SBGOLOB           JTPTN   0000000000000000  PDIP    00000000
+ GDGNT   000000  JCSMF   T   SDKAD   8DA1A800  JCTX    8DA0E8
+ ACTAD   8DA56800  SMRBA   0000000000000000  SCT     00  FLGS1   00
+ JDPCD   0000  JDPOP   0000
+ XTR20   00000000000000000000000000000000000000000000000000000000  RSW1    00
+ RSW2    00  QIDNT   00  SNUMB   01  STIOT   00000000  DEVT    00000000
+ CKTTR   00  NTRK    00  NRCKP   0000  VOLSQ   00  JSB     12  SSTR    8DA1A8
+ STAT2   85  CKIDL   00  CKIDT
+ JMR     8DA3E8  JMRD    00  JMROP   F1  JMRCL   00  JMRSS   017421
+ JMRJT   017421  JMRJD   23176F  SRBT    00000000  SSD     23176F
+ USER                    PRFMF   40  ACODE   00000000  VULDP   00004900
+ DSKAD   000000  IDENT   02  JTIME   838DA0E8
+ PRGNM   ....JCTX..Y.                              NEXT    000000  JNFLD   00
+ ACCNT   ..................................................
+
+
+1= HELP      2=           3= END        4=           5= REPEAT  6=
+7= BACKWARD  8= FORWARD   9= HIST BWD  10= HIST FWD 11=        12=
+
+
+    So you have to do this for whatever macros you are interested in
+displaying, since IBM did not code them with the LOOK program in mind.
+
+    Also please note that since the IBM macros are copyrighted, I could
+not put the altered copies on the CBT Tape, so the best I can do, is to
+put an object deck of CBMACS into this file, so that you can use the
+product of my efforts.  I also mention which macros I myself have
+altered.
+
+    Best I can do.
+
+    Good luck in formatting the macros that you are interested in.
+
+Sincerely,    Sam                email:   sbgolob@cbttape.org
+
+
+Macros altered:
+
+IEFAJCTB IEFJMR IHAACEE IHAIPA IHAWEB IHAWUQ
+IKJEFLWA IKJTPVT IKJTSVT IKJUPT
+
+(Some of these are not IBM macros, so I can include them
+in files on the CBT Tape.)
+
+
